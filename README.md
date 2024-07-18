@@ -31,8 +31,9 @@ This project is an Inventory Management System built with Node.js, Express.js, S
 - Handlebars.js
 - Chart.js
 
-## License
-
-
+## URL Links
+Github - [https://github.com/kk6625/Project-2]
+Deployed - []
 
 ## Author
+Made by Dilan Patel and Andy Choi

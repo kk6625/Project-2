@@ -1,40 +1,22 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
-const Schema = mongoose.Schema;
-
-const userSchema = new Schema({
-  username: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  password: {
-    type: String,
-    required: true
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  }
-});
-
-// Hash password before saving
-userSchema.pre('save', async function(next) {
-  if (this.isModified('password') || this.isNew) {
-    this.password = await bcrypt.hash(this.password, 10);
-  }
-  next();
-});
-
-// Compare password
-userSchema.methods.comparePassword = function(password) {
-  return bcrypt.compare(password, this.password);
+module.exports = (sequelize, DataTypes) => {
+  const User = sequelize.define('User', {
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false
+    }
+  });
+  User.associate = function(models) {
+    User.hasMany(models.Order, { foreignKey: 'userId' });
+    User.hasMany(models.Product, { foreignKey: 'userId' });
+  };
+  return User;
 };
-
-const User = mongoose.model('User', userSchema);
-module.exports = User;

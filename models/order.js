@@ -1,25 +1,21 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-
-const orderSchema = new Schema({
-  product: {
-    type: String,
-    required: true
-  },
-  customerName: {
-    type: String,
-    required: true
-  },
-  status: {
-    type: String,
-    required: true,
-    enum: ['Getting Ready', 'Shipped', 'Delivered']
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  }
-});
-
-const Order = mongoose.model('Order', orderSchema);
-module.exports = Order;
+module.exports = (sequelize, DataTypes) => {
+    const Order = sequelize.define('Order', {
+        item: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        quantity: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        status: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        userId: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        }
+    });
+    return Order;
+};

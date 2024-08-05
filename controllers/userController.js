@@ -7,14 +7,14 @@ const showLoginForm = (req, res) => {
 
 // Handle user login
 const login = async (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
   try {
-    const user = await User.findOne({ where: { username } });
+    const user = await User.findOne({ where: { email } });
     if (user && user.password === password) {
       req.session.user = user;
-      res.redirect('/dashboard'); // Redirect to dashboard or desired page
+      res.redirect('/home'); // Redirect to home or desired page
     } else {
-      res.render('users/login', { error: 'Invalid username or password' });
+      res.render('users/login', { error: 'Invalid email or password' });
     }
   } catch (error) {
     res.status(500).json(error);
@@ -32,7 +32,7 @@ const register = async (req, res) => {
   try {
     const newUser = await User.create({ username, email, password });
     req.session.user = newUser;
-    res.redirect('/dashboard'); // Redirect to dashboard or desired page
+    res.redirect('/home'); // Redirect to home or desired page
   } catch (error) {
     res.status(500).json(error);
   }

@@ -1,30 +1,27 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-
-const productSchema = new Schema({
-  name: {
-    type: String,
-    required: true
-  },
-  description: {
-    type: String,
-    required: true
-  },
-  price: {
-    type: Number,
-    required: true,
-    min: 0
-  },
-  stock: {
-    type: Number,
-    required: true,
-    min: 0
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  }
-});
-
-const Product = mongoose.model('Product', productSchema);
-module.exports = Product;
+module.exports = (sequelize, DataTypes) => {
+    const Product = sequelize.define('Product', {
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      quantity: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
+      reorderLevel: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
+      userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      }
+    });
+  
+    Product.associate = function(models) {
+      Product.belongsTo(models.User, { foreignKey: 'userId' });
+    };
+  
+    return Product;
+  };
+  
